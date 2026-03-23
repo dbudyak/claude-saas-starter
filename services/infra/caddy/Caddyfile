@@ -1,0 +1,46 @@
+# SaaS Starter — Caddyfile
+# Development: HTTP on port 80
+# Production: replace :80 with your domain and Caddy handles SSL automatically
+
+:80 {
+    # API and internal backend routes
+    handle /api/* {
+        reverse_proxy backend:8080
+    }
+
+    handle /health {
+        reverse_proxy backend:8080
+    }
+
+    handle /metrics {
+        # Restrict metrics in production — accessible from monitoring network only
+        reverse_proxy backend:8080
+    }
+
+    # Everything else goes to the frontend SPA
+    handle {
+        reverse_proxy frontend:80
+    }
+
+    log {
+        output stdout
+        format json
+    }
+}
+
+# Production SSL example (uncomment and set your domain):
+# yourdomain.com {
+#     handle /api/* {
+#         reverse_proxy backend:8080
+#     }
+#     handle /health {
+#         reverse_proxy backend:8080
+#     }
+#     handle {
+#         reverse_proxy frontend:80
+#     }
+#     log {
+#         output file /var/log/caddy/access.log
+#         format json
+#     }
+# }

@@ -1,0 +1,77 @@
+# Binaries
+**/backend/server
+**/backend/main
+*.test
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Go
+/vendor/
+go.sum.bak
+
+# Node
+**/node_modules/
+**/dist/
+**/build/
+**/.next/
+**/.nuxt/
+**/.cache/
+**/coverage/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+**/.env
+**/.env.local
+**/.env.staging
+**/.env.production
+!.env.example
+!**/.env.example
+
+# Database
+*.db
+*.sqlite
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Docker volumes (local)
+postgres_data/
+grafana_data/
+prometheus_data/
+loki_data/
+caddy_data/
+caddy_config/
+
+# Test output
+test_results/
+playwright-report/
+test-results/
+
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfplan
+
+# Certificates
+*.pem
+*.key
+*.crt
+
+# OS
+.DS_Store
+Thumbs.db
