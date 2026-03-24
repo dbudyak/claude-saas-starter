@@ -2,6 +2,16 @@
 
 Model Context Protocol (MCP) servers extend Claude Code's capabilities. This project is pre-configured with several MCP servers in `.claude/settings.json`.
 
+## Context Management
+
+Long sessions degrade in quality as the context window fills. Several mechanisms counter this:
+
+- **`autoCompact`** (enabled in settings.json) — Claude Code automatically summarizes older conversation history when approaching context limits, preserving the active working context
+- **`memory` MCP** — persist facts, decisions, and preferences to a knowledge graph that survives between sessions; agents retrieve only what's relevant rather than re-establishing everything from scratch
+- **`sequential-thinking` MCP** — structures complex reasoning into explicit steps, avoiding the wasted context of unstructured exploration
+- **Scoped agents** — each agent loads only its domain's rules and knowledge, not the entire project context
+- **`.claude/memory/`** — file-based memory for durable project facts; see `MEMORY.md` for the index
+
 ## Installed MCP Servers
 
 ### context7 — Library Documentation
@@ -104,3 +114,29 @@ To add a new MCP server, edit `.claude/settings.json`:
 | Notion | Community servers | Documentation sync |
 
 Browse more at: modelcontextprotocol.io/servers
+
+---
+
+### memory — Persistent Knowledge Graph
+**Purpose**: Store and retrieve facts, decisions, and context across sessions without consuming the conversation window.
+
+**When to use**:
+- Remembering architectural decisions made in previous sessions
+- Storing user preferences Claude should always apply
+- Keeping track of which features are in progress
+
+**Setup**: Pre-configured, no API key needed.
+
+**Usage**: Ask Claude to remember/recall/forget things. It manages the graph automatically.
+
+---
+
+### sequential-thinking — Structured Reasoning
+**Purpose**: Break complex tasks into explicit reasoning steps before acting.
+
+**When to use**:
+- Debugging non-obvious issues
+- Planning a multi-file refactor
+- Any task where jumping straight to code risks going in the wrong direction
+
+**Setup**: Pre-configured, no API key needed.
