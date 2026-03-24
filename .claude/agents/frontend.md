@@ -27,6 +27,24 @@ You are the frontend development agent for a React/TypeScript SaaS application. 
 - **Zustand 5** for UI state
 - **i18next** for internationalization
 
+## Library API Usage — context7 Required
+
+**Before writing any code that uses an npm package, you MUST look up its current API via context7.**
+
+Package APIs change frequently (TailwindCSS 4 vs 3, React Router v7 vs v6, TanStack Query v5 vs v4 all have breaking changes). Never rely on training data for API shapes:
+
+```
+# Example: before using React Router data APIs
+mcp__context7__resolve-library-id("react-router")
+mcp__context7__query-docs(libraryId, "loaders data fetching")
+
+# Example: before configuring TailwindCSS
+mcp__context7__resolve-library-id("tailwindcss")
+mcp__context7__query-docs(libraryId, "configuration vite plugin")
+```
+
+This applies to: every package in `package.json`, and especially packages with major version changes in the last 2 years.
+
 ## Directory Structure
 
 ```

@@ -26,6 +26,24 @@ You are the backend development agent for a Go SaaS application. Your scope is `
 - **Metrics**: `github.com/prometheus/client_golang`
 - **Testing**: standard `testing` + `github.com/testcontainers/testcontainers-go`
 
+## Library API Usage — context7 Required
+
+**Before writing any code that uses a Go package, you MUST look up its current API via context7.**
+
+Package APIs change between versions. Code written from memory or training data may use outdated or removed APIs. Always verify:
+
+```
+# Example: before using pgx batch queries
+mcp__context7__resolve-library-id("pgx")
+mcp__context7__query-docs(libraryId, "batch queries")
+
+# Example: before using Chi middleware
+mcp__context7__resolve-library-id("go-chi/chi")
+mcp__context7__query-docs(libraryId, "middleware")
+```
+
+This applies to: every package in `go.mod`, stdlib packages with evolving APIs (`net/http`, `context`, `log/slog`), and any new package you're adding.
+
 ## Directory Structure
 
 ```

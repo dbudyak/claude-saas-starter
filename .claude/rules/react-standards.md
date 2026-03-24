@@ -1,5 +1,18 @@
 # React & TypeScript Standards
 
+## Library API Lookups (context7)
+
+Always use context7 to verify package APIs before writing code. The frontend ecosystem moves fast — TailwindCSS 4, React Router v7, and TanStack Query v5 all have breaking changes from their previous major versions.
+
+```
+mcp__context7__resolve-library-id("tailwindcss")
+mcp__context7__resolve-library-id("react-router")
+mcp__context7__resolve-library-id("tanstack/react-query")
+mcp__context7__resolve-library-id("zustand")
+```
+
+**When to use**: any time you're using a package API you haven't verified in the current session, adding a new dependency, or unsure which major version syntax applies.
+
 ## Naming
 
 - **Components**: PascalCase (`UserProfile.tsx`)

@@ -1,5 +1,17 @@
 # Go Development Standards
 
+## Library API Lookups (context7)
+
+Always use context7 to verify package APIs before writing code. Go modules evolve — method signatures, options structs, and interfaces change between minor versions.
+
+```
+mcp__context7__resolve-library-id("pgx")          # then query for specific topic
+mcp__context7__resolve-library-id("go-chi/chi")
+mcp__context7__resolve-library-id("golang-jwt/jwt")
+```
+
+**When to use**: any time you're using a package method you haven't verified in the current session, adding a new dependency, or getting a compile error on a package call.
+
 ## Code Style
 
 ### Formatting
