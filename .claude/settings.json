@@ -1,9 +1,9 @@
 {
-  "$schema": "https://claude.ai/schema/settings.json",
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "autoCompact": true,
   "permissions": {
     "allow": [
-      "Bash(git status)",
+      "Bash(git status*)",
       "Bash(git diff*)",
       "Bash(git log*)",
       "Bash(git add*)",
@@ -27,85 +27,5 @@
       "Bash(docker ps*)"
     ],
     "deny": []
-  },
-  "agents": {
-    "backend": {
-      "description": "Go backend development agent",
-      "allowedTools": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
-      "allowedPaths": [
-        "services/backend/**",
-        ".claude/rules/**",
-        ".claude/knowledge/**",
-        "docs/data_model.md",
-        "docs/openapi.yaml"
-      ]
-    },
-    "frontend": {
-      "description": "React frontend development agent",
-      "allowedTools": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
-      "allowedPaths": [
-        "services/frontend/**",
-        ".claude/rules/**",
-        ".claude/knowledge/**",
-        "docs/openapi.yaml"
-      ]
-    },
-    "infra": {
-      "description": "Infrastructure and deployment agent",
-      "allowedTools": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
-      "allowedPaths": [
-        "services/infra/**",
-        ".github/**",
-        ".claude/rules/**",
-        ".claude/knowledge/**"
-      ]
-    },
-    "product": {
-      "description": "Product documentation agent",
-      "allowedTools": ["Read", "Write", "Edit", "Glob", "Grep"],
-      "allowedPaths": [
-        "docs/**",
-        ".claude/rules/**",
-        ".claude/knowledge/**"
-      ]
-    }
-  },
-  "mcpServers": {
-    "context7": {
-      "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp@latest"],
-      "description": "Up-to-date documentation for any library. Use when you need docs for Go packages, npm packages, or any framework."
-    },
-    "github": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
-      },
-      "description": "GitHub API integration — search code, manage issues, PRs, repos. Set GITHUB_TOKEN env var."
-    },
-    "brave-search": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
-      "env": {
-        "BRAVE_API_KEY": "${BRAVE_API_KEY}"
-      },
-      "description": "Web search via Brave. Set BRAVE_API_KEY env var. Get key at brave.com/search/api/"
-    },
-    "postgres": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-postgres", "${DATABASE_URL}"],
-      "description": "Direct PostgreSQL access for debugging and exploration. Set DATABASE_URL env var."
-    },
-    "memory": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-memory"],
-      "description": "Persistent knowledge graph across sessions. Agents can store and retrieve facts, decisions, and context without consuming the conversation window."
-    },
-    "sequential-thinking": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
-      "description": "Structured step-by-step reasoning for complex tasks. Reduces wasted context from unstructured exploration."
-    }
   }
 }

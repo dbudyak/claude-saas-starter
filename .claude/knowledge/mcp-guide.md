@@ -1,6 +1,6 @@
 # MCP Servers Guide
 
-Model Context Protocol (MCP) servers extend Claude Code's capabilities. This project is pre-configured with several MCP servers in `.claude/settings.json`.
+Model Context Protocol (MCP) servers extend Claude Code's capabilities. This project's MCP servers are configured in `.mcp.json` at the repo root (project-scoped). User-level servers go in `~/.claude.json`.
 
 ## Context Management
 

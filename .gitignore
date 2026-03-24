@@ -78,3 +78,6 @@ Thumbs.db
 
 # Lefthook
 .lefthook-local.yml
+
+# MCP local overrides (may contain personal API keys)
+.mcp.json.local
