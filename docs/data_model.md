@@ -1,10 +1,12 @@
 # Data Model
 
-Source of truth for the database schema. Keep this in sync with migration files.
+> **This file is a template. Replace the example tables below with your actual schema.**
+>
+> This document is the source of truth for the database schema — keep it in sync with migration files in `services/backend/migrations/`.
 
 ## Tables
 
-### users
+### Example: users
 
 Registered application users.
 

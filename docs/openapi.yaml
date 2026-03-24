@@ -1,10 +1,13 @@
 openapi: 3.1.0
 info:
-  title: SaaS Starter API
-  version: 1.0.0
+  title: Your App API
+  version: 0.1.0
   description: |
-    REST API for the SaaS Starter template.
-    Replace this description with your product's API documentation.
+    This file is a template. The auth endpoints below (signup, login, /me) reflect
+    the scaffold code in services/backend/. Add your product's endpoints here and
+    remove anything that doesn't apply.
+
+    This document is the source of truth for the API contract between frontend and backend.
 
 servers:
   - url: http://localhost/api
