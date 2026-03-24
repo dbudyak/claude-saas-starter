@@ -4,10 +4,10 @@ A full-stack SaaS template with Claude Code multi-agent configuration. The goal 
 
 ## What's included
 
-**Application**
-- Go backend: Chi router, pgx/v5, JWT auth, bcrypt passwords, Prometheus metrics, sequential SQL migrations
-- React frontend: TypeScript, TailwindCSS 4, React Query, Zustand, React Router v7, i18next
-- Auth flow: signup, login, protected routes — wired end-to-end
+**Application scaffold**
+- Go backend: Chi router, pgx/v5, Prometheus metrics, sequential SQL migrations, JWT middleware
+- React frontend: TypeScript, TailwindCSS 4, React Query, Zustand, React Router v7
+- Pattern examples for handler, model, repository — not a full implementation
 
 **Infrastructure**
 - Docker Compose stack: backend, frontend, PostgreSQL, Caddy, Mailpit (local email), Prometheus, Grafana, Loki, pgAdmin
