@@ -1,0 +1,12 @@
+pre-commit:
+  parallel: true
+  commands:
+    go-fmt:
+      glob: "services/backend/**/*.go"
+      run: gofmt -l {staged_files} | grep . && exit 1 || exit 0
+    go-vet:
+      root: "services/backend"
+      run: go vet ./...
+    frontend-lint:
+      glob: "services/frontend/src/**/*.{ts,tsx}"
+      run: cd services/frontend && npm run lint --if-present

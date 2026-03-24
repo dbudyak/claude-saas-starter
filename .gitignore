@@ -75,3 +75,6 @@ test-results/
 # OS
 .DS_Store
 Thumbs.db
+
+# Lefthook
+.lefthook-local.yml

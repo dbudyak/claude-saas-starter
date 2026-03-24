@@ -1,0 +1,5 @@
+hcloud_token        = "your-hetzner-api-token"
+project_name        = "myapp"
+server_type         = "cx22"
+location            = "hel1"
+ssh_public_key_path = "~/.ssh/id_ed25519.pub"

@@ -1,97 +1,68 @@
 # Architecture
 
-## System Design
+Technical decisions and architectural notes. Use ADR format for significant choices.
+
+## System Overview
 
 ```
-[Browser]
-    |
-    | HTTPS
-    v
-[Caddy]  ← auto-SSL, reverse proxy
-  |    |
-  |    +---> /api/* → [Go Backend :8080]
-  |                        |
-  |                        v
-  |                   [PostgreSQL]
-  |
-  +---------> /* → [React Frontend :80]
-
-[Prometheus] ← scrapes /metrics from backend
-[Grafana]    ← queries Prometheus + Loki
-[Loki]       ← receives logs via Promtail
-[Promtail]   ← scrapes container stdout
+┌─────────────────────────────────────┐
+│         Caddy (port 80/443)         │
+│      reverse proxy + auto-SSL       │
+└────────────┬────────────────────────┘
+             │
+      /api/* │  /*
+             ▼         ▼
+     ┌──────────┐  ┌──────────┐
+     │ Backend  │  │ Frontend │
+     │ :8080    │  │ nginx:80 │
+     └────┬─────┘  └──────────┘
+          │
+     ┌────▼─────┐
+     │ Postgres │
+     │ :5432    │
+     └──────────┘
 ```
 
-## Architecture Decision Records
+All services run on a single Docker network. Services communicate via Docker service names (`backend:8080`, `db:5432`), not localhost.
 
-### ADR-001: Go + Chi for backend
+## ADR Format
 
+Record decisions here as they are made.
+
+```markdown
+## ADR-001: [Title]
+
+**Date**: YYYY-MM-DD
 **Status**: Accepted
 
-**Context**: Need a simple, performant backend. Team knows Go.
+### Context
+Why did this decision need to be made?
 
-**Decision**: Use Go with Chi router. No framework magic — just HTTP handlers and middleware.
+### Decision
+What was decided?
 
-**Consequences**:
-- Positive: Fast, explicit, easy to read
-- Negative: More boilerplate than Rails/Django-style frameworks
+### Consequences
+- What becomes easier?
+- What becomes harder?
+```
 
----
+## ADRs
 
-### ADR-002: No ORM — raw SQL with pgx
+<!-- Add your decisions below as you make them. Examples:
 
+## ADR-001: PostgreSQL over MySQL
+
+**Date**: ...
 **Status**: Accepted
 
-**Context**: Database queries should be readable and predictable.
+### Context
+Needed a relational database. Both are viable options.
 
-**Decision**: Use `pgx/v5` directly with parameterized queries. No GORM or similar.
+### Decision
+PostgreSQL. Better JSON support, better full-text search, pgx driver is excellent for Go.
 
-**Consequences**:
-- Positive: Explicit queries, no N+1 surprises, full SQL power
-- Negative: More code per query
+### Consequences
+- Team needs PostgreSQL familiarity
+- Better query capabilities long-term
 
----
-
-### ADR-003: React Query + Zustand for frontend state
-
-**Status**: Accepted
-
-**Context**: Need server state management and local UI state management.
-
-**Decision**: React Query for server state (fetching, caching, invalidation). Zustand for UI state (auth, modals, etc.).
-
-**Consequences**:
-- Positive: Clear separation, minimal boilerplate
-- Negative: Two libraries to understand instead of one
-
----
-
-### ADR-004: Caddy for reverse proxy
-
-**Status**: Accepted
-
-**Context**: Need SSL termination and routing.
-
-**Decision**: Caddy with automatic HTTPS (Let's Encrypt).
-
-**Consequences**:
-- Positive: Zero config SSL, simple Caddyfile syntax
-- Negative: Less widespread than Nginx, fewer tutorials
-
----
-
-### ADR-005: Sequential SQL migrations
-
-**Status**: Accepted
-
-**Context**: Need reliable database schema versioning.
-
-**Decision**: Sequential `.sql` files applied on backend startup. Tracked in `schema_migrations` table.
-
-**Consequences**:
-- Positive: Simple, no extra tooling (no Flyway/Liquibase/goose needed)
-- Negative: Must run backend at least once to apply migrations
-
-## Add New ADRs Below
-
-When making a significant technical decision, document it here following the template above.
+-->

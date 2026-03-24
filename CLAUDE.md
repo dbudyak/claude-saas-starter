@@ -133,6 +133,22 @@ make dev-deploy        # Deploy to development server
 make dev-logs          # View dev server logs
 ```
 
+## Superpowers Skills
+
+If the [superpowers](https://github.com/southbridgeai/superpowers) skill pack is installed, the following skills apply to this project:
+
+| Skill | When it triggers |
+|-------|-----------------|
+| `brainstorming` | Before building any new feature |
+| `test-driven-development` | Before writing implementation code |
+| `systematic-debugging` | When encountering a bug or unexpected behavior |
+| `writing-plans` | When given a multi-step spec before touching code |
+| `executing-plans` | When running a written plan in a new session |
+| `verification-before-completion` | Before claiming any task is done |
+| `finishing-a-development-branch` | When implementation is complete and ready to integrate |
+
+Install: follow instructions at the superpowers repository.
+
 ## Important Context
 
 - **Source of truth for schema**: `docs/data_model.md` and migration files in `services/backend/migrations/`

@@ -1,0 +1,18 @@
+#cloud-config
+# Runs once on first boot. Installs Docker and sets up the app directory.
+
+package_update: true
+package_upgrade: true
+
+packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+
+runcmd:
+  - curl -fsSL https://get.docker.com | sh
+  - systemctl enable docker
+  - systemctl start docker
+  - mkdir -p /opt/${project_name}
+  - echo "Server ready. Set DEPLOY_HOST=$(curl -s ifconfig.me) in GitHub secrets."
