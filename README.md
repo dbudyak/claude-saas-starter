@@ -1,16 +1,24 @@
 # SaaS Starter — Go + React + Claude Code
 
-A battle-tested template for shipping full-stack SaaS applications fast. Built around Claude Code's multi-agent system, this starter gives you a production-ready foundation with Go backend, React frontend, observability, and CI/CD — all wired up and ready to customize.
+A full-stack SaaS template with Claude Code multi-agent configuration. The goal is to skip the setup and get straight to building your product.
 
 ## What's included
 
-- **Go backend** (Chi router, pgx/PostgreSQL, JWT auth, migrations)
-- **React frontend** (TypeScript, TailwindCSS 4, React Query, Zustand, i18n)
-- **Infrastructure** (Docker Compose, Caddy reverse proxy, Prometheus + Grafana + Loki)
-- **CI/CD** (GitHub Actions: test → build → deploy)
-- **Claude Code agents** (backend, frontend, infra, product — scoped and optimized)
-- **Development rules** (Go standards, React standards, security, aesthetics)
-- **Observability** (metrics, logs, dashboards out of the box)
+**Application**
+- Go backend: Chi router, pgx/v5, JWT auth, bcrypt passwords, Prometheus metrics, sequential SQL migrations
+- React frontend: TypeScript, TailwindCSS 4, React Query, Zustand, React Router v7, i18next
+- Auth flow: signup, login, protected routes — wired end-to-end
+
+**Infrastructure**
+- Docker Compose stack: backend, frontend, PostgreSQL, Caddy, Mailpit (local email), Prometheus, Grafana, Loki, pgAdmin
+- Caddy reverse proxy: routes `/api/*` to backend, everything else to frontend; SSL via Let's Encrypt in production
+- GitHub Actions: test → build Docker images → push to GHCR → SSH deploy
+
+**Claude Code configuration**
+- Four scoped agents (backend, frontend, infra, product) — each restricted to its own directory
+- Rules for Go, React/TypeScript, security, and frontend design
+- MCP servers configured: context7 (library docs), GitHub, Brave Search, Postgres
+- Agents required to verify builds before reporting done
 
 ## Quick Start
 
@@ -47,13 +55,13 @@ This starts: backend, frontend, PostgreSQL, Caddy, Prometheus, Grafana, Loki, pg
 | Grafana | http://localhost:3002 |
 | pgAdmin | http://localhost:5050 |
 
-### 4. Customize with Claude Code
+### 4. Start Claude Code
 
 ```bash
 claude
 ```
 
-The multi-agent system is pre-configured. Claude Code knows your stack and can operate each service independently.
+The agents are pre-configured. Ask Claude to add a feature and it will use the appropriate scoped agent for the relevant service.
 
 ## Project Structure
 
@@ -115,36 +123,32 @@ After cloning, update these for your project:
 
 See [SETUP_CHECKLIST.md](SETUP_CHECKLIST.md) for the complete guide.
 
-## Claude Code Multi-Agent System
+## Claude Code Agents
 
-This template ships with four specialized agents:
+| Agent | Directory | Handles |
+|-------|-----------|---------|
+| `backend` | `services/backend/` | handlers, repository, migrations, services |
+| `frontend` | `services/frontend/` | components, pages, API client, state |
+| `infra` | `services/infra/` | Docker, Caddy, CI/CD, monitoring config |
+| `product` | `docs/` | user stories, ADRs, API spec, TODO |
 
-| Agent | Scope |
-|-------|-------|
-| `backend` | `services/backend/` |
-| `frontend` | `services/frontend/` |
-| `infra` | `services/infra/` |
-| `product` | `docs/` |
-
-Agents are automatically scoped — the backend agent cannot accidentally modify frontend files. Each agent has deep knowledge of its domain and follows verification protocols.
+Each agent is restricted to its directory and required to run a build check before reporting done. The agents also require context7 lookups before using any library API — avoids outdated usage from training data.
 
 ## Observability
 
-Pre-configured out of the box:
-
-- **Prometheus** — scrapes backend metrics at `/metrics`
-- **Grafana** — dashboards at `:3002` (admin/admin by default)
-- **Loki + Promtail** — log aggregation from all containers
+- Backend exposes `/metrics` in Prometheus format
+- Prometheus scrapes it; Grafana reads Prometheus and Loki
+- Promtail ships container logs to Loki
+- Grafana at `http://localhost:3002` (default credentials: admin/admin — change in `.env`)
 
 ## Deployment
 
-Deployment via GitHub Actions to any Linux server with Docker:
+Push to `main`:
+1. GitHub Actions runs backend unit tests + frontend build check
+2. Builds Docker images, pushes to `ghcr.io/<your-org>/<your-app>`
+3. SSH into your server, pulls new images, restarts containers
 
-1. Push to `main` → tests run
-2. Tests pass → Docker images built and pushed to GHCR
-3. Images ready → SSH deploy to your server
-
-Required GitHub secrets: `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_SSH_KEY`, plus all app environment variables.
+Required secrets: `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_SSH_KEY`, plus all app env vars. See `.github/workflows/ci-cd.yml` for the full list.
 
 ## Tech Stack
 
