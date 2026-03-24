@@ -1,12 +1,16 @@
--- 001_init.sql
--- Initial schema: users table
+-- Initial schema migration.
+-- Replace this with your actual initial schema.
+--
+-- Guidelines:
+--   UUID primary keys:     id UUID PRIMARY KEY DEFAULT gen_random_uuid()
+--   Timestamps:            created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+--   Strings:               TEXT (not VARCHAR)
+--   Soft deletes:          deleted_at TIMESTAMPTZ
+--   Foreign key indexes:   CREATE INDEX IF NOT EXISTS idx_table_col ON table(col)
 
-CREATE TABLE IF NOT EXISTS users (
-    id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    email         TEXT NOT NULL UNIQUE,
-    password_hash TEXT NOT NULL,
-    role          TEXT NOT NULL DEFAULT 'member',
-    created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
-CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+-- Example:
+-- CREATE TABLE IF NOT EXISTS items (
+--     id         UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+--     name       TEXT        NOT NULL,
+--     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+-- );

@@ -14,9 +14,6 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"github.com/yourorg/yourapp/config"
-	"github.com/yourorg/yourapp/handlers"
-	"github.com/yourorg/yourapp/middleware"
-	"github.com/yourorg/yourapp/repository"
 )
 
 func main() {
@@ -25,7 +22,6 @@ func main() {
 
 	cfg := config.Load()
 
-	// Database
 	pool, err := pgxpool.New(context.Background(), cfg.DatabaseURL)
 	if err != nil {
 		slog.Error("failed to connect to database", "error", err)
@@ -33,29 +29,23 @@ func main() {
 	}
 	defer pool.Close()
 
-	// Run migrations
 	if err := runMigrations(context.Background(), pool); err != nil {
 		slog.Error("failed to run migrations", "error", err)
 		os.Exit(1)
 	}
 
-	// Repositories
-	userRepo := repository.NewUserRepository(pool)
+	// Initialize repositories and handlers here.
+	// Example:
+	//   itemRepo := repository.NewItemRepository(pool)
+	//   itemHandler := handlers.NewItemHandler(itemRepo)
 
-	// Handlers
-	authHandler := handlers.NewAuthHandler(userRepo, cfg)
-	userHandler := handlers.NewUserHandler(userRepo)
-
-	// Router
 	r := chi.NewRouter()
 
 	r.Use(chimiddleware.RequestID)
 	r.Use(chimiddleware.RealIP)
-	r.Use(middleware.Logger)
+	r.Use(chimiddleware.Logger)
 	r.Use(chimiddleware.Recoverer)
-	r.Use(middleware.CORS(cfg.AppURL))
 
-	// Public routes
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		fmt.Fprintf(w, `{"status":"ok","time":"%s"}`, time.Now().UTC().Format(time.RFC3339))
@@ -63,18 +53,13 @@ func main() {
 
 	r.Handle("/metrics", promhttp.Handler())
 
-	// Auth routes
-	r.Route("/api/auth", func(r chi.Router) {
-		r.Post("/signup", authHandler.Signup)
-		r.Post("/login", authHandler.Login)
-	})
-
-	// Protected routes
-	r.Route("/api", func(r chi.Router) {
-		r.Use(middleware.Authenticate(cfg.JWTSecret))
-
-		r.Get("/me", userHandler.Me)
-	})
+	// Register your routes here.
+	// Example:
+	//   r.Route("/api/items", func(r chi.Router) {
+	//       r.Use(middleware.Authenticate(cfg.JWTSecret))
+	//       r.Get("/", itemHandler.List)
+	//       r.Post("/", itemHandler.Create)
+	//   })
 
 	addr := fmt.Sprintf(":%s", cfg.Port)
 	slog.Info("starting server", "addr", addr)
